@@ -164,9 +164,10 @@ class API {
         $stmt->bind_param("i", $machine_id);
 
         if(!$stmt->execute()) {
-            return db_error_response("delete machine / delete machine");
+            return $this->db_error_response("delete machine / delete machine");
         }
 
+        
         $response["result"]["degree"] = "total";
         return $response;
     }
@@ -329,7 +330,8 @@ class API {
 
     // Returns true iff machine 1 has better specs than machine 2 
     function compare_machines($id_machine_1, $id_machine_2) {
-
+        // Fetch machine 1
+        
     }
 
     // Returns true iff the user has a machine that is able to play given game
