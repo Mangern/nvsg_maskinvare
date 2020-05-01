@@ -294,13 +294,13 @@ class API {
 
     function fetch_games_platforms() {
         $sql = <<<SQL
-        SELECT * FROM 
-            game 
-        JOIN 
-            game_has_platform ON game.id_game = game_has_platform.id_game 
-        JOIN 
-            platform ON platform.id_platform = game_has_platform.id_platform
-        SQL;
+            SELECT * FROM 
+                game 
+            JOIN 
+                game_has_platform ON game.id_game = game_has_platform.id_game 
+            JOIN 
+                platform ON platform.id_platform = game_has_platform.id_platform
+            SQL;
 
         $res = $this->conn->query($sql);
 
@@ -331,12 +331,104 @@ class API {
     // Returns true iff machine 1 has better specs than machine 2 
     function compare_machines($id_machine_1, $id_machine_2) {
         // Fetch machine 1
+        $sql = <<<SQL
+            SELECT * FROM 
+                    machine 
+                INNER JOIN
+                    (SELECT id_cpu, name as cpu_name, score as cpu_score FROM
+                        cpu
+                    ) AS cpu_derived
+                ON machine.id_cpu = cpu_derived.id_cpu
+                INNER JOIN
+                    (SELECT id_gpu, name as gpu_name, score as gpu_score FROM
+                        gpu
+                    ) AS gpu_derived
+                ON machine.id_gpu = gpu_derived.id_gpu
+            WHERE id_machine = ?
+        SQL;
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->bind_param("i", $id_machine_1);
+        if(!$stmt->execute()) {
+            return $this->db_error_response("compare machines / fetch machine 1");
+        }
+
+        $machine_1 = $stmt->get_result()->fetch_assoc();
+
+        $stmt->bind_param("i", $id_machine_2);
+        if(!$stmt->execute()) {
+            return $this->db_error_response("compare machines / fetch machine 2");
+        }
+
+        $machine_2 = $stmt->get_result()->fetch_assoc();
+
+        $ram_ok = $machine_1["ram"] >= $machine_2["ram"];
+        $cpu_ok = $machine_1["cpu_score"] >= $machine_2["cpu_score"];
+        $gpu_ok = $machine_1["gpu_score"] >= $machine_2["gpu_score"];
+        $storage_space_ok = $machine_1["storage_space"] >= $machine_2["storage_space"];
+
         
+        $response = array(
+            "error" => false,
+            "result" => array(
+                "verdict" => ($ram_ok && $cpu_ok && $gpu_ok && $storage_space_ok),
+                "ram_ok" => $ram_ok,
+                "cpu_ok" => $cpu_ok,
+                "gpu_ok" => $gpu_ok,
+                "storage_space_ok" => $storage_space_ok
+            )
+        );
+        return $response;
     }
 
     // Returns true iff the user has a machine that is able to play given game
     function user_can_play_game($user_id, $game_id) {
-    
+        $sql = <<<SQL
+            SELECT * FROM 
+                game_has_platform 
+            INNER JOIN 
+                (SELECT machine.* FROM 
+                        machine 
+                    INNER JOIN 
+                        user_has_machine
+                    ON machine.id_machine = user_has_machine.id_machine
+                WHERE id_user = ?) AS user_machine
+            ON user_machine.id_platform = game_has_platform.id_platform
+            INNER JOIN
+                (SELECT name AS platform_name, id_platform FROM platform) as platform_derived
+            ON game_has_platform.id_platform = platform_derived.id_platform
+        WHERE id_game = ?
+        SQL;
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->bind_param("ii", $user_id, $game_id);
+        if(!$stmt->execute())return $this->db_error_response("user can play game / fetch game platform machines");
+
+        $res = $stmt->get_result();
+
+        $response = array(
+            "error" => false,
+            "result" => array()
+        );
+
+        while($row = $res->fetch_assoc()) {
+            $user_machine = $row["id_machine"];
+            $game_machine = $row["id_minimum_machine"];
+
+            $can_play_response = $this->compare_machines($user_machine, $game_machine);
+
+            if($can_play_response["error"])return $can_play_response;
+
+            $can_play = $can_play_response["result"];
+
+            $can_play["id_machine"] = $user_machine;
+            $can_play["platform"] = $row["platform_name"];
+            array_push($response["result"], $can_play);
+        }
+
+        return $response;
     }
 }
 
