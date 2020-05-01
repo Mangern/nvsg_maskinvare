@@ -308,22 +308,30 @@ class API {
 
         $response = array("error" => false, "result" => array());
 
+
+
         $game_platform = array();
 
         while($row = $res->fetch_assoc()) {
+            $game_id = $row["id_game"];
             $game_title = $row["title"];
             $platform = $row["name"];
 
-            if(array_key_exists($game_title, $game_platform)) {
-                array_push($game_platform[$game_title], $platform);
+            if(array_key_exists($game_id, $game_platform)) {
+                array_push($game_platform[$game_id]["platforms"], $platform);
             }
             else {
-                $game_platform[$game_title] = array($platform);
+                $game_platform[$game_id]["game_title"] = $game_title;
+                $game_platform[$game_id]["platforms"] = array($platform);
+
             }
         }
 
-        foreach($game_platform as $game_title => $platform_array) {
-            array_push($response["result"], array("game_title" => $game_title, "platforms" => $platform_array));
+        foreach($game_platform as $game_id => $platform_title_array) {
+            array_push($response["result"], array(
+                "id_game" => $game_id, 
+                "game_title" => $platform_title_array["game_title"], 
+                "platforms" => $platform_title_array["platforms"]));
         }
         return $response;
     }

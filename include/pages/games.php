@@ -2,7 +2,6 @@
 $user = $_SESSION["user"];
 
 include 'include/api.php';
-
 ?>
 
 <h1>Games</h1>
@@ -22,6 +21,7 @@ include 'include/api.php';
             }
             
             foreach($games as $row) {
+                $game_id = $row["id_game"];
                 $title = $row["game_title"];
                 $platforms = $row["platforms"];
 
@@ -37,6 +37,30 @@ include 'include/api.php';
                 $platformstring = substr($platformstring, 0, strlen($platformstring) - 1);
 
                 echo "<td>$platformstring</td>";
+
+                // Can play
+                $can_play_response = $api_handle->user_can_play_game($user["id"], $game_id);
+
+                if($can_play_response["error"]) {
+                    echo "<td>?</td>";
+                }
+                else {
+                    $can_play = false;
+
+                    foreach($can_play_response["result"] as $row) {
+                        if($row["verdict"]) {
+                            $can_play = true;
+                            break;
+                        }
+                    }
+
+                    if($can_play) {
+                        echo "<td>Yes</td>";
+                    }
+                    else {
+                        echo "<td>No</td>";
+                    }
+                }
 
                 echo "</tr>";
             }
