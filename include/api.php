@@ -190,6 +190,18 @@ class API {
             return $this->db_error_response("delete user game");
         }
         return array("error" => false);
+
+
+
+
+
+
+
+
+
+
+
+        
     }
 
     function update_user($user_id, $email, $first_name, $last_name, $nickname) {
