@@ -336,6 +336,39 @@ class API {
         return $response;
     }
 
+    function fetch_user_games($user_id) {
+        $sql = <<<SQL
+            SELECT * FROM 
+                    user_has_game_on_platform
+                INNER JOIN
+                    game
+                ON user_has_game_on_platform.id_game = game.id_game
+                INNER JOIN
+                    platform
+                ON user_has_game_on_platform.id_platform = platform.id_platform
+            WHERE id_user = ?
+            ORDER BY user_has_game_on_platform.id_game
+        SQL;
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("i", $user_id);
+
+        if(!$stmt->execute())return $this->db_error_response("fetch user games", $stmt->error);
+        
+        $res = $stmt->get_result();
+
+        $response = array(
+            "error" => false,
+            "result" => array()
+        );
+
+        while($row = $res->fetch_assoc()) {
+            array_push($response["result"], $row);
+        }
+
+        return $response;
+    }
+
     // Returns true iff machine 1 has better specs than machine 2 
     function compare_machines($id_machine_1, $id_machine_2) {
         // Fetch machine 1

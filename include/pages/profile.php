@@ -78,9 +78,30 @@ include 'include/api.php';
 <h1>Games</h1>
 <table>
 <thead>
-
+    <tr><th>Game Title</th><th>Platform (s)</th></tr>
 </thead>
 <tbody>
+    <?php 
+    $response = $api_handle->fetch_user_games($user["id"]);
+
+    if(!$response["error"]) {
+        $games = $response["result"];
+
+     
+        foreach($games as $row) {
+            echo "<tr>";
+
+            $title = $row["title"];
+            $platform = $row["name"];
+            echo "<td>$title</td>";
+            echo "<td>$platform</td>";
+
+            echo "</tr>";
+        }
+        
+    }
+    ?>
 </tbody>
 </table>
 
+<a href="<?php echo menu_url(PAGE_ADD_GAME); ?>">Add game</a>
