@@ -23,7 +23,7 @@ include 'include/api.php';
             foreach($games as $row) {
                 $game_id = $row["id_game"];
                 $title = $row["game_title"];
-                $platforms = $row["platforms"];
+                $platforms = $row["platforms"]; // id, name
 
                 echo "<tr>";
 
@@ -32,7 +32,7 @@ include 'include/api.php';
                 $platformstring = "";
 
                 foreach($platforms as $platform) {
-                    $platformstring .= $platform . ',';
+                    $platformstring .= $platform["name"] . ',';
                 }
                 $platformstring = substr($platformstring, 0, strlen($platformstring) - 1);
 

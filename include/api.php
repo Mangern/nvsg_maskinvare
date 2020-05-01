@@ -119,6 +119,16 @@ class API {
         return array("error" => false);
     }
 
+    function insert_user_game($user_id, $game_id, $platform_id) {
+        $stmt = $this->conn->prepare("INSERT INTO user_has_game_on_platform (id_user, id_game, id_platform) VALUES (?, ? ,?)");
+        $stmt->bind_param("iii", $user_id, $game_id, $platform_id);
+
+        if(!$stmt->execute()) {
+            return $this->db_error_response("insert user game");
+        }
+        return array("error" => false, "result" => $stmt->insert_id);
+    }
+
     function delete_machine($user_id, $machine_id) {
         // First, delete from user-machine table
 
@@ -170,6 +180,16 @@ class API {
         
         $response["result"]["degree"] = "total";
         return $response;
+    }
+
+    function delete_user_game($user_id, $game_id, $platform_id) {
+        $stmt = $this->conn->prepare("DELETE FROM user_has_game_on_platform WHERE id_user = ? AND id_game = ? AND id_platform = ?");
+        $stmt->bind_param("iii", $user_id, $game_id, $platform_id);
+
+        if(!$stmt->execute()) {
+            return $this->db_error_response("delete user game");
+        }
+        return array("error" => false);
     }
 
     function update_user($user_id, $email, $first_name, $last_name, $nickname) {
@@ -292,6 +312,8 @@ class API {
         );
     }
 
+
+
     function fetch_games_platforms() {
         $sql = <<<SQL
             SELECT * FROM 
@@ -315,14 +337,17 @@ class API {
         while($row = $res->fetch_assoc()) {
             $game_id = $row["id_game"];
             $game_title = $row["title"];
+            $platform_id = $row["id_platform"];
             $platform = $row["name"];
 
+            $platform_row = array("id" => $platform_id, "name" => $platform);
+
             if(array_key_exists($game_id, $game_platform)) {
-                array_push($game_platform[$game_id]["platforms"], $platform);
+                array_push($game_platform[$game_id]["platforms"], $platform_row);
             }
             else {
                 $game_platform[$game_id]["game_title"] = $game_title;
-                $game_platform[$game_id]["platforms"] = array($platform);
+                $game_platform[$game_id]["platforms"] = array($platform_row);
 
             }
         }
