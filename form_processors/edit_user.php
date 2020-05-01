@@ -14,7 +14,7 @@ if(isset($_POST["edit_user"])) {
     $response = $api_handle->update_user($uid, $email, $first_name, $last_name, $nickname);
 
     if($response["error"]) {
-        $_SESSION["error_msg"] = "Could not update user: " . $response["error_msg"];
+        $_SESSION["error"] = "Could not update user: " . $response["error_msg"];
         redirect(PAGE_PROFILE);
     }
     $_SESSION["user"] = $response["result"];

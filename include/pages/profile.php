@@ -73,6 +73,8 @@ include 'include/api.php';
 </tbody>
 </table>
 
+<a href="<?php echo menu_url(PAGE_ADD_MACHINE); ?>">Add machine</a>
+
 <h1>Games</h1>
 <table>
 <thead>
@@ -82,4 +84,3 @@ include 'include/api.php';
 </tbody>
 </table>
 
-<a href="<?php echo menu_url(PAGE_ADD_MACHINE); ?>">Add machine</a>

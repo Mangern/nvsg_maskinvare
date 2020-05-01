@@ -9,8 +9,9 @@ if(!isset($_SESSION["user"]) && $page != PAGE_LOGIN && $page != PAGE_REGISTER) {
     header("Location: " . BASE_URL . "?page=" . PAGE_LOGIN);
 }
 
-if(isset($_SESSION["error_msg"])) {
-    echo $_SESSION["error_msg"];
+if(isset($_SESSION["error"])) {
+    echo $_SESSION["error"];
+    unset($_SESSION["error"]);
 }
 
 

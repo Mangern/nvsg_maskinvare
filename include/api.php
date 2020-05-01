@@ -3,8 +3,8 @@ class API {
     private $conn;
 
     // Helpers
-    private function db_error_response($location = "") {
-        return array("error" => true, "error_msg" => "Failed to query to database on " . $location);
+    private function db_error_response($location = "", $error_info = "") {
+        return array("error" => true, "error_msg" => "Failed to query to database on " . $location . ($error_info == "" ? "" : ": " . $error_info));
     }
 
     private function fetch_all($table) {
@@ -73,13 +73,13 @@ class API {
         return $response;
     }
 
-    function insert_machine($user_id, $name, $ram, $cpu, $gpu, $storage_space) {
+    function insert_machine($user_id, $name, $ram, $cpu, $gpu, $storage_space, $platform_id) {
         // Insert id
-        $stmt = $this->conn->prepare("INSERT INTO machine (name, ram, id_cpu, id_gpu, storage_space) VALUES (?, ?, ?, ?, ?)");
-        $stmt->bind_param("siiii", $name, $ram, $cpu, $gpu, $storage_space);
+        $stmt = $this->conn->prepare("INSERT INTO machine (name, ram, id_cpu, id_gpu, storage_space, id_platform) VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("siiiii", $name, $ram, $cpu, $gpu, $storage_space, $platform_id);
 
         if(!$stmt->execute()) {
-            return $this->db_error_response("insert machine");
+            return $this->db_error_response("insert machine", $stmt->error);
         }
 
         $machine_id = $stmt->insert_id;
@@ -174,16 +174,16 @@ class API {
 
     function update_user($user_id, $email, $first_name, $last_name, $nickname) {
         $sql = <<<SQL
-        UPDATE user SET
-            email = ?,
-            first_name = ?,
-            last_name = ?,
-            nickname = ?
-        WHERE id_user = ?
+            UPDATE user SET
+                email = ?,
+                first_name = ?,
+                last_name = ?,
+                nickname = ?
+            WHERE id_user = ?
         SQL;
 
         $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("issss", $user_id, $email, $first_name, $last_name, $nickname);
+        $stmt->bind_param("ssssi", $email, $first_name, $last_name, $nickname, $user_id);
 
         if(!$stmt->execute()) {
             return $this->db_error_response("update user");

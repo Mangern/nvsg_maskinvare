@@ -21,7 +21,7 @@ if(isset($_POST["add_machine"])) {
         $gpu = $_POST["gpu"];
         $storage = $_POST["storage_space"];
     
-        $response = $api_handle->insert_machine($uid, $name, $ram, $cpu, $gpu, $storage);
+        $response = $api_handle->insert_machine($uid, $name, $ram, $cpu, $gpu, $storage, $platform_id);
     }
 
     
