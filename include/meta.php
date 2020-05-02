@@ -15,6 +15,7 @@ const PAGE_PROFILE = "profile";
 const PAGE_GAMES = "games";
 const PAGE_ADD_MACHINE ="add_machine";
 const PAGE_ADD_GAME = "add_user_game";
+const PAGE_GAME_DETAILS = "game_details";
 
 // Other
 const ID_PLATFORM_PC = 1;

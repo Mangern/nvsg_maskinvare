@@ -60,6 +60,8 @@ include 'include/api.php';
                     else {
                         echo "<td>No</td>";
                     }
+
+                    echo "<td><a href='" . menu_url(PAGE_GAME_DETAILS) . "&game_id=" . $game_id . "'>Details</a></td>";
                 }
 
                 echo "</tr>";

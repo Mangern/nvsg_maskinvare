@@ -508,6 +508,62 @@ class API {
 
         return $response;
     }
+
+    function fetch_game_details($game_id) {
+        $sql = <<<SQL
+            SELECT * FROM 
+                game_has_platform 
+            JOIN 
+                (SELECT * FROM
+                    machine
+                INNER JOIN
+                    (SELECT id_cpu AS derived_cpu, name AS cpu_name FROM cpu) AS cpu_derived
+                ON machine.id_cpu = cpu_derived.derived_cpu
+                INNER JOIN
+                    (SELECT id_gpu AS derived_gpu, name AS gpu_name FROM gpu) AS gpu_derived
+                ON machine.id_gpu = gpu_derived.derived_gpu)
+                AS machine_derived
+            ON game_has_platform.id_minimum_machine = machine_derived.id_machine
+            JOIN
+                game
+            ON game.id_game = game_has_platform.id_game
+            JOIN
+                (SELECT id_platform, name AS platform_name FROM platform) AS platform_derived
+            ON game_has_platform.id_platform = platform_derived.id_platform
+        WHERE game.id_game = ?
+        SQL;
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("i", $game_id);
+
+        if(!$stmt->execute()) {
+            return $this->db_error_response("fetch game details", $stmt->error);
+        }
+
+        $res = $stmt->get_result();
+
+        $response = array("error" => false, "result" => array(
+            "title" => "",
+            "platforms" => array()
+        ));
+        
+        while($row = $res->fetch_assoc()) {
+            $response["result"]["title"] = $row["title"];
+
+            $platform_entry = array("id" => $row["id_platform"],
+                                    "name" => $row["platform_name"],
+                                    "minimum_machine" => array());
+
+            $platform_entry["minimum_machine"]["ram"] = $row["ram"];
+            $platform_entry["minimum_machine"]["cpu"] = $row["cpu_name"];
+            $platform_entry["minimum_machine"]["gpu"] = $row["gpu_name"];
+            $platform_entry["minimum_machine"]["storage_space"] = $row["storage_space"];
+
+            array_push($response["result"]["platforms"], $platform_entry);
+        }
+
+        return $response;
+    }
 }
 
 $api_handle = new API();
