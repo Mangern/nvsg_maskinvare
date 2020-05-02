@@ -70,3 +70,5 @@ include 'include/api.php';
     ?>
 </tbody>
 </table>
+
+<a href="<?php echo menu_url(PAGE_REGISTER_GAME); ?>">Register new game</a>
