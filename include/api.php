@@ -234,6 +234,26 @@ class API {
 
     }
 
+    function register_game($title) {
+        $stmt = $this->conn->prepare("SELECT * FROM game WHERE title = ?");
+        $stmt->bind_param("s", $title);
+
+        if(!$stmt->execute()) return $this->db_error_response("register game / check game exists");
+
+        $res = $stmt->get_result();
+        if($res->num_rows != 0) {
+            return array("error" => false, "result" => array("already_exists" => true, "id" => $res->fetch_assoc()["id"]));
+        }
+
+        $stmt = $this->conn->prepare("INSERT INTO game (title) VALUES (?)");
+        $stmt->bind_param("s", $title);
+
+        if(!$stmt->execute()) return $this->db_error_response("register game / insert game");
+
+        $response = array("error" => false, "result" => array("already_exists" => false, "id" => $stmt->insert_id));
+        return $response;
+    }
+
     // Accessers
     
 

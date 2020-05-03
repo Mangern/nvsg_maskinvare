@@ -73,7 +73,7 @@ function add_platform() {
 
         let option = document.createElement("option");
         option.id = "option_" + option_cnt + "_" + name;
-        
+        option.value = id;
         option.appendChild(document.createTextNode(name))
         select.appendChild(option);
     }
@@ -94,7 +94,7 @@ function add_platform() {
 
     form.appendChild(document.createElement("br"));
 
-    var sspace_elem = create_input_element("Storage Space", "storage_space", "number");
+    var sspace_elem = create_input_element("Storage Space", "storage_space_" + platform_counter, "number");
     form.appendChild(sspace_elem);
 
 
