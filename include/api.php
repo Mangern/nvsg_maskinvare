@@ -366,6 +366,7 @@ class API {
         return $this->fetch_all("cpu");
     }
 
+    // Returns response containing array of machines
     function fetch_machines($user_id) {
         $sql = <<<SQL
             SELECT * FROM 
@@ -505,7 +506,7 @@ class API {
         return $response;
     }
 
-    // Returns true iff machine 1 has better specs than machine 2 
+    // Returns response where response->result->verdict is true iff machine 1 has better specs than machine 2 
     function compare_machines($id_machine_1, $id_machine_2) {
         // Fetch machine 1
         $sql = <<<SQL
@@ -608,7 +609,31 @@ class API {
         return $response;
     }
 
-    function fetch_game_details($game_id) {
+    // Returns either true or false
+    private function user_can_play_game_on_platform($user_id, $game_id, $platform_id) {
+        $stmt = $this->conn->prepare("SELECT * FROM game_has_platform WHERE id_game = ? AND id_platform = ?");
+        $stmt->bind_param("ii", $game_id, $platform_id);
+
+        if(!$stmt->execute())return false;
+
+        $game_machine_id = $stmt->get_result()->fetch_assoc()["id_minimum_machine"];
+
+        $response = $this->fetch_machines($user_id);
+        if($response["error"])return false;
+
+        $machines = $response["result"];
+
+        foreach($machines as $row) {
+            if($row["id_platform"] != $platform_id)continue;
+            $response = $this->compare_machines($row["id_machine"], $game_machine_id);
+            if(!$response["error"]) {
+                if($response["result"]["verdict"] == true)return true;
+            }
+        }
+        return false;
+    }
+
+    function fetch_game_details($game_id, $user_id) {
         $sql = <<<SQL
             SELECT * FROM 
                 game_has_platform 
@@ -653,10 +678,14 @@ class API {
                                     "name" => $row["platform_name"],
                                     "minimum_machine" => array());
 
+            // The order of the data is kind of important
+            $platform_entry["minimum_machine"]["storage_space"] = $row["storage_space"];
             $platform_entry["minimum_machine"]["ram"] = $row["ram"];
             $platform_entry["minimum_machine"]["cpu"] = $row["cpu_name"];
             $platform_entry["minimum_machine"]["gpu"] = $row["gpu_name"];
-            $platform_entry["minimum_machine"]["storage_space"] = $row["storage_space"];
+
+            $can_play = $this->user_can_play_game_on_platform($user_id, $game_id, $row["id_platform"]);
+            $platform_entry["user_can_play"] = $can_play;
 
             array_push($response["result"]["platforms"], $platform_entry);
         }
