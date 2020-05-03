@@ -202,18 +202,6 @@ class API {
             return $this->db_error_response("delete user game");
         }
         return array("error" => false);
-
-
-
-
-
-
-
-
-
-
-
-        
     }
 
     function update_user($user_id, $email, $first_name, $last_name, $nickname) {
@@ -364,6 +352,10 @@ class API {
 
     function fetch_cpu() {
         return $this->fetch_all("cpu");
+    }
+
+    function fetch_user() {
+        return $this->fetch_all("user");
     }
 
     // Returns response containing array of machines

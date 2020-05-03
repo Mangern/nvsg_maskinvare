@@ -28,8 +28,9 @@ function menu_url($name) {
     <div>
         <ul>
             <li><a href="<?php echo menu_url(PAGE_HOME); ?>">Home</a></li>
-            <li><a href="<?php echo menu_url(PAGE_PROFILE); ?>">Profile</a></li>
             <li><a href="<?php echo menu_url(PAGE_GAMES); ?>">Games</a></li>
+            <li><a href="<?php echo menu_url(PAGE_USERS); ?>">Users</a></li>
+            <li><a href="<?php echo menu_url(PAGE_PROFILE); ?>">Profile</a></li>
             <li><a href="form_processors/logout.php">Log out</a></li>
         </ul>
     </div>
