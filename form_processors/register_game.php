@@ -24,23 +24,25 @@ if(isset($_POST["register_game"])) {
         $platform_id = $_POST["platform_" . $i];
 
 
-        $storage_space = $_POST["storage_space_" + $i];
+        $storage_space = $_POST["storage_space_" . $i];
 
         $requirements = array(
+            "ram" => -1,
+            "cpu_id" => -1,
+            "gpu_id" => -1,
             "storage_space" => $storage_space
         );
-
         if($platform_id == ID_PLATFORM_PC) {
-            $cpu
-        }
-        else {
-            
+            $requirements["ram"] = $_POST["ram_" . $i];
+            $requirements["cpu_id"] = $_POST["cpu_" . $i];
+            $requirements["gpu_id"] = $_POST["gpu_" . $i];
         }
         
         // Sketchy: ignore response
-        $api_handle->register_platform_to_game($game_id, $platform_id, $requirements);
+        $response = $api_handle->register_platform_to_game($game_id, $title, $platform_id, $requirements, $i);
+        if($response["error"])$_SESSION["error"] .= $response["error_msg"] . json_encode($requirements);
     }
-
+    redirect(PAGE_GAMES);
 }
 else {
     redirect(PAGE_GAMES);

@@ -7,7 +7,7 @@ const DISPLAY_TYPE = "block";
 
 function create_input_element(placeholder, name, type) {
     var element = document.createElement("input");
-    element.id = "input_" + name + "_" + platform_counter;
+    element.id = "input_" + name;
     element.type = type;
     element.placeholder = placeholder;
     element.name = name;
@@ -18,7 +18,6 @@ function create_input_element(placeholder, name, type) {
 function on_platform_select(id, show, name) {
 
     
-
     document.getElementById("input_storage_space_" + id).style.display = DISPLAY_TYPE;
     if(show) {
         document.getElementById("input_ram_" + id).style.display = DISPLAY_TYPE;
@@ -80,7 +79,8 @@ function add_platform() {
 
     select.onchange = function(evt) {
         var id = evt.target.id.substring(16);
-        if(evt.target.value == "PC") {
+        console.log(evt.target.value);
+        if(evt.target.value == ID_PLATFORM_PC) {
             on_platform_select(id, true, evt.target.value);
         }
         else {
@@ -100,11 +100,11 @@ function add_platform() {
 
     form.appendChild(document.createElement("br"));
 
-    form.appendChild(create_input_element("RAM", "ram", "number"));
+    form.appendChild(create_input_element("RAM", "ram_" + platform_counter, "number"));
 
     var cpu_select = document.createElement("select");
     cpu_select.id = "select_cpu_" + platform_counter;
-    cpu_select.name = "cpu";
+    cpu_select.name = "cpu_" + platform_counter;
     cpu_select.style.display = "none";
 
     for(idx in cpu_list) {
@@ -113,6 +113,7 @@ function add_platform() {
 
         let option = document.createElement("option");
         option.id = id;
+        option.value = id;
         option.innerText = name;
         cpu_select.appendChild(option);
     }
@@ -123,7 +124,7 @@ function add_platform() {
 
     var gpu_select = document.createElement("select");
     gpu_select.id = "select_gpu_" + platform_counter;
-    gpu_select.name = "gpu";
+    gpu_select.name = "gpu_" + platform_counter;
     gpu_select.style.display = "none";
 
     for(idx in gpu_list) {
@@ -132,6 +133,7 @@ function add_platform() {
 
         let option = document.createElement("option");
         option.id = id;
+        option.value = id;
         option.innerText = name;
         gpu_select.appendChild(option);
     }

@@ -169,6 +169,18 @@ class API {
             return $response;
         }
 
+        // Check if machine is a minimum machine
+        $stmt = $this->conn->prepare("SELECT * FROM game_has_platform WHERE id_minimum_machine = ?");
+        $stmt->bind_param("i", $machine_id);
+
+        if(!$stmt->execute()) {
+            return $this->db_error_response("delete machine / check minimum machine");
+        }
+
+        if($stmt->get_result()->num_rows != 0){
+            return $response;
+        }
+
         // Delete machine
         $stmt = $this->conn->prepare("DELETE FROM machine WHERE id_machine = ?");
         $stmt->bind_param("i", $machine_id);
@@ -242,7 +254,7 @@ class API {
 
         $res = $stmt->get_result();
         if($res->num_rows != 0) {
-            return array("error" => false, "result" => array("already_exists" => true, "id" => $res->fetch_assoc()["id"]));
+            return array("error" => false, "result" => array("already_exists" => true, "id" => $res->fetch_assoc()["id_game"]));
         }
 
         $stmt = $this->conn->prepare("INSERT INTO game (title) VALUES (?)");
@@ -252,6 +264,56 @@ class API {
 
         $response = array("error" => false, "result" => array("already_exists" => false, "id" => $stmt->insert_id));
         return $response;
+    }
+
+    function register_platform_to_game($game_id, $game_title, $platform_id, $requirements, $compatibility) {
+        $machine = array(
+            "name" => $game_title . " minimum machine " . $platform_id,
+            "ram" => $requirements["ram"],
+            "cpu_id" => $requirements["cpu_id"],
+            "gpu_id" => $requirements["gpu_id"],
+            "storage_space" => $requirements["storage_space"]
+        );
+        if($requirements["ram"] == -1) {
+            // Collect platform specs
+            $response = $this->fetch_default_machine($platform_id);
+            if($response["error"])return $response;
+
+            $default_machine = $response["result"];
+
+            $machine["ram"] = $default_machine["ram"];
+            $machine["cpu_id"] = $default_machine["id_cpu"];
+            $machine["gpu_id"] = $default_machine["id_gpu"];
+        }
+        
+        // insert machine
+        $sql = <<<SQL
+            INSERT INTO
+                machine (name, ram, id_cpu, id_gpu, storage_space, id_platform)
+            VALUES
+                (?, ?, ?, ?, ?, ?)
+        SQL;
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("siiiii", 
+            $machine["name"], 
+            $machine["ram"],
+            $machine["cpu_id"],
+            $machine["gpu_id"],
+            $machine["storage_space"],
+            $platform_id
+        );
+
+        if(!$stmt->execute())return $this->db_error_response("register platform to game / insert minimum machine", $stmt->error);
+
+        $machine_id = $stmt->insert_id;
+
+        // register relationship
+        $stmt = $this->conn->prepare("INSERT INTO game_has_platform (id_game, id_platform, compatibility, id_minimum_machine) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("iiii", $game_id, $platform_id, $compatibility, $machine_id);
+
+        if(!$stmt->execute())return $this->db_error_response("register platform to game");
+
+        return array("error" => false);
     }
 
     // Accessers
@@ -344,7 +406,24 @@ class API {
         );
     }
 
+    function fetch_default_machine($platform_id) {
+        $sql = <<<SQL
+            SELECT * FROM 
+                    platform 
+                INNER JOIN 
+                    machine 
+                ON machine.id_machine = id_default_machine 
+            WHERE platform.id_platform = ?
+        SQL;
 
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("i", $platform_id);
+
+        if(!$stmt->execute())return $this->db_error_response("fetch_default_machine");
+        $result = $stmt->get_result()->fetch_assoc();
+        $response = array("error" => false, "result" => $result);
+        return $response;
+    }
 
     function fetch_games_platforms() {
         $sql = <<<SQL

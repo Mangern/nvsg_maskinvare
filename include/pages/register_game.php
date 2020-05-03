@@ -36,7 +36,7 @@ $gpu_list = $response["result"];
 <h1>Register new game</h1>
 <form id="form_register_game" action="form_processors/register_game.php" method="POST">
     <label for="title">Title</label>
-    <input type="text">
+    <input type="text" name="title">
 
     <input type="hidden" name="num_platforms" id="input_num_platforms" value="0">
 
