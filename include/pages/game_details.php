@@ -55,4 +55,12 @@ $game_details = $response["result"];
 </tbody>
 </table>
 <p id="p_can_play_text">You can play <?php echo $game_details["title"]; ?> on PC</p>
+
+<h2>Users</h2>
+<p>These users have <?php echo $game_details["title"]; ?></p>
+<?php
+
+
+
+?>
 <script src="static/js/game_details.js"></script>
