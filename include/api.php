@@ -690,6 +690,39 @@ class API {
             array_push($response["result"]["platforms"], $platform_entry);
         }
 
+        $users_response = $this->fetch_game_users($game_id);
+        if($users_response["error"])return $users_response;
+
+        $response["result"]["users"] = $users_response["result"];
+        return $response;
+    }
+
+    private function fetch_game_users($game_id) {
+        $sql = <<<SQL
+            SELECT * FROM 
+                    user_has_game_on_platform
+                JOIN
+                    (SELECT * FROM user) as user_derived
+                ON user_has_game_on_platform.id_user = user_derived.id_user
+                JOIN 
+                    platform
+                ON user_has_game_on_platform.id_platform = platform.id_platform
+            WHERE id_game = ?
+            ORDER BY user_derived.id_user
+        SQL;
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("i", $game_id);
+
+        if(!$stmt->execute())return $this->db_error_response("fetch game users");
+
+        $res = $stmt->get_result();
+
+        $response = array("error" => false, "result" => array());
+
+        while($row = $res->fetch_assoc()) {
+            array_push($response["result"], $row);
+        }
         return $response;
     }
 }
