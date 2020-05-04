@@ -304,6 +304,17 @@ class API {
         return array("error" => false);
     }
 
+    function add_account($user_id, $service_id, $account_tag) {
+        $stmt = $this->conn->prepare("INSERT INTO user_has_account (id_user, id_service, account_tag) VALUES (?, ?, ?)");
+        $stmt->bind_param("iis", $user_id, $service_id, $account_tag);
+
+        if(!$stmt->execute()) {
+            return $this->db_error_response("add account");
+        }
+
+        return array("error" => false, "result" => array("id" => $stmt->insert_id));
+    }
+
     // Accessers
     
 
@@ -356,6 +367,10 @@ class API {
 
     function fetch_user() {
         return $this->fetch_all("user");
+    }
+
+    function fetch_third_party_service() {
+        return $this->fetch_all("third_party_service");
     }
 
     // Returns response containing array of machines
@@ -738,6 +753,32 @@ class API {
         
         $user = $stmt->get_result()->fetch_assoc();
         return array("error" => false, "result" => $user);
+    }
+
+    function fetch_user_accounts($user_id) {
+        $sql = <<<SQL
+            SELECT * FROM 
+                    user_has_account
+                JOIN
+                    third_party_service
+                ON user_has_account.id_service = third_party_service.id_service
+            WHERE id_user = ?
+        SQL;
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("i", $user_id);
+
+        if(!$stmt->execute())return $this->db_error_response("fetch user accounts");
+
+        $accounts = array();
+
+        $res = $stmt->get_result();
+
+        while($row = $res->fetch_assoc()) {
+            array_push($accounts, $row);
+        }
+
+        return array("error" => false, "result" => $accounts);
     }
 }
 
