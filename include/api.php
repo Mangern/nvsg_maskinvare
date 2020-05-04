@@ -315,6 +315,21 @@ class API {
         return array("error" => false, "result" => array("id" => $stmt->insert_id));
     }
 
+    function update_account($user_id, $service_id, $account_tag) {
+        $sql = <<<SQL
+            UPDATE user_has_account SET
+                account_tag = ?
+            WHERE id_user = ? AND id_service = ?
+        SQL;
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("sii", $account_tag, $user_id, $service_id);
+
+        if(!$stmt->execute())return $this->db_error_response("update account");
+
+        return array("error" => false);
+    }
+
     // Accessers
     
 
