@@ -33,6 +33,13 @@ function on_platform_select(id, show, name) {
 
 }
 
+function make_label(text, input_name) {
+    var label = document.createElement("label");
+    label.for = input_name;
+    label.innerText = text;
+    return label;
+}
+
 function add_platform() {
     var form = document.getElementById("container_dynamic_inputs");
 
@@ -94,7 +101,9 @@ function add_platform() {
 
     form.appendChild(document.createElement("br"));
 
-    var sspace_elem = create_input_element("Storage Space", "storage_space_" + platform_counter, "number");
+    var sspace_name = "storage_space_" + platform_counter;
+    var sspace_elem = create_input_element("Storage Space", sspace_name, "number");
+
     form.appendChild(sspace_elem);
 
 
