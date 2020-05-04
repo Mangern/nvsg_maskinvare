@@ -27,6 +27,10 @@ const PAGE_PROFILE_GAMES = "profile_games";
 const PAGE_PROFILE_ADD_GAME = "profile_add_game";
 const PAGE_PROFILE_ACCOUNTS = "profile_accounts";
 
+const PAGE_USER_DETAILS_PROFILE = "user_details_profile";
+const PAGE_USER_DETAILS_MACHINES = "user_details_machines";
+const PAGE_USER_DETAILS_GAMES = "user_details_games";
+
 // Other
 const ID_PLATFORM_PC = 1;
 
