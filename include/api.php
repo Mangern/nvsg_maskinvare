@@ -625,6 +625,35 @@ class API {
         return false;
     }
 
+    private function fetch_game_users($game_id) {
+        $sql = <<<SQL
+            SELECT * FROM 
+                    user_has_game_on_platform
+                JOIN
+                    (SELECT * FROM user) as user_derived
+                ON user_has_game_on_platform.id_user = user_derived.id_user
+                JOIN 
+                    platform
+                ON user_has_game_on_platform.id_platform = platform.id_platform
+            WHERE id_game = ?
+            ORDER BY user_derived.id_user
+        SQL;
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("i", $game_id);
+
+        if(!$stmt->execute())return $this->db_error_response("fetch game users");
+
+        $res = $stmt->get_result();
+
+        $response = array("error" => false, "result" => array());
+
+        while($row = $res->fetch_assoc()) {
+            array_push($response["result"], $row);
+        }
+        return $response;
+    }
+
     function fetch_game_details($game_id, $user_id) {
         $sql = <<<SQL
             SELECT * FROM 
@@ -689,33 +718,26 @@ class API {
         return $response;
     }
 
-    private function fetch_game_users($game_id) {
+    function fetch_user_details($user_id) {
         $sql = <<<SQL
-            SELECT * FROM 
-                    user_has_game_on_platform
-                JOIN
-                    (SELECT * FROM user) as user_derived
-                ON user_has_game_on_platform.id_user = user_derived.id_user
-                JOIN 
-                    platform
-                ON user_has_game_on_platform.id_platform = platform.id_platform
-            WHERE id_game = ?
-            ORDER BY user_derived.id_user
+            SELECT
+                id_user AS id,
+                email,
+                first_name,
+                last_name,
+                nickname
+            FROM
+                    user
+            WHERE id_user = ?
         SQL;
 
         $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("i", $game_id);
+        $stmt->bind_param("i", $user_id);
 
-        if(!$stmt->execute())return $this->db_error_response("fetch game users");
-
-        $res = $stmt->get_result();
-
-        $response = array("error" => false, "result" => array());
-
-        while($row = $res->fetch_assoc()) {
-            array_push($response["result"], $row);
-        }
-        return $response;
+        if(!$stmt->execute())return $this->db_error_response("fetch user details");
+        
+        $user = $stmt->get_result()->fetch_assoc();
+        return array("error" => false, "result" => $user);
     }
 }
 
