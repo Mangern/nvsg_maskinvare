@@ -13,6 +13,6 @@ if(isset($_POST["delete_machine"])) {
     if($response["error"]) {
         $_SESSION["error_msg"] = $response["error_msg"];
     }
-    redirect(PAGE_PROFILE);
+    redirect(PAGE_PROFILE, PAGE_PROFILE_MACHINES);
 }
 ?>

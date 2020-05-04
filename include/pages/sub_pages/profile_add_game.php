@@ -1,8 +1,4 @@
 <?php 
-include 'include/api.php';
-
-$user = $_SESSION["user"];
-
 $game_response = $api_handle->fetch_games_platforms();
 
 if($game_response["error"]) {

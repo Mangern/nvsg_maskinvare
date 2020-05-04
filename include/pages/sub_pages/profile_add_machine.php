@@ -1,7 +1,3 @@
-<?php 
-include 'include/api.php';
-?>
-
 <h1>Add machine</h1>
 <form action="form_processors/add_machine.php" method="post">
     <label for="platform" id="label_platform">Platform</label>

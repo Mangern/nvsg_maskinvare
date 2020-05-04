@@ -14,6 +14,6 @@ if(isset($_POST["add_user_game"])) {
     if($response["error"]) {
         $_SESSION["error"] = $response["error_msg"];
     }
-    redirect(PAGE_PROFILE);
+    redirect(PAGE_PROFILE, PAGE_PROFILE_GAMES);
 }
 ?>
