@@ -14,7 +14,7 @@ $users = $response["result"];
 <h1>All Users</h1>
 <table>
 <thead>
-    <tr><th>Name</th><th>Nickname</th><th>Known as...</th></tr>
+    <tr><th>Name</th><th>Nickname</th></tr>
 </thead>
 <tbody>
     <?php 
@@ -31,7 +31,6 @@ $users = $response["result"];
         echo "<td>$first_name $last_name</td>";
         echo "<td>$nickname</td>";
 
-        echo "<td>Gamertag123</td>";
 
         echo "<td><a href='" . menu_url(PAGE_USER_DETAILS) . "&user_id=" . $row["id_user"] . "'>Details</a></td>"; 
 
