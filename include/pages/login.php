@@ -1,16 +1,27 @@
+<?php 
+$page = (isset($_GET["sub_page"]) ? $_GET["sub_page"] : PAGE_LOGIN_LOGIN);
 
-<h1>Log in</h1>
 
-<form action="form_processors/login.php" method="POST">
+function is_login() {
+    global $page;
+    return $page == PAGE_LOGIN_LOGIN;
+}
 
-    <input type="text" name="email" placeholder="Email" />
-    <br>
-    <input type="password" name="password" placeholder="Password" />
-    <br>
 
-    <input type="submit" name="login" value="Log in" />
+function is_register() {
+    global $page;
+    return $page == PAGE_LOGIN_REGISTER;
+}
+?>
 
-    <br>
 
-    <p>Don't have an account? <a href="<?php echo BASE_URL . "?page=" . PAGE_REGISTER; ?>">Register</a></p>
-</form>
+<div id="container_home">
+<div class="bg-image"></div>
+
+<div class="bg-text">
+<div class="login-content">
+<?php 
+
+include 'include/pages/sub_pages/' . $page . '.php';
+?>
+</div>

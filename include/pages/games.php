@@ -4,10 +4,15 @@ $user = $_SESSION["user"];
 include 'include/api.php';
 ?>
 
+<ul class="navbar-left">
+    <li class="sub-menu-item"><a class="active-left" href="">Games</a></li>
+</ul>
+
+<div class="inner-content">
 <h1>Games</h1>
 <table>
 <thead>
-    <tr><th>Game title</th><th>Platform (s)</th><th>Playable</th></tr>
+    <tr><th>Game title</th><th>Platform (s)</th><th>Playable</th><th></th></tr>
 </thead>
 <tbody>
     <?php 
@@ -72,3 +77,4 @@ include 'include/api.php';
 </table>
 
 <a href="<?php echo menu_url(PAGE_REGISTER_GAME); ?>">Register new game</a>
+    </div>

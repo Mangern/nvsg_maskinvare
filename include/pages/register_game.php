@@ -33,6 +33,11 @@ $gpu_list = $response["result"];
     var platforms = <?php echo json_encode($platforms); ?>;
 </script>
 
+<ul class="navbar-left">
+    <li class="sub-menu-item"><a class="active-left" href="">Games</a></li>
+</ul>
+
+<div class="inner-content">
 <h1>Register new game</h1>
 <form id="form_register_game" action="form_processors/register_game.php" method="POST">
     <label for="title">Title</label>
@@ -49,4 +54,5 @@ $gpu_list = $response["result"];
 
     <input type="submit" name="register_game" id="input_submit" value="Register" style="visibility: hidden;">
 </form>
+</div>
 <script src="static/js/register_game.js"></script>

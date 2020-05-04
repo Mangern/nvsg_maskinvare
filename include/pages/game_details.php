@@ -36,6 +36,11 @@ $game_details = $response["result"];
     var platforms = <?php echo json_encode($game_details["platforms"]); ?>;
 </script>
 
+<ul class="navbar-left">
+    <li class="sub-menu-item"><a class="active-left" href="<?php echo menu_url(PAGE_GAMES); ?>">Games</a></li>
+</ul>
+
+<div class="inner-content">
 <h1><?php echo $game_details["title"]; ?></h1>
 <h2>Spec Requirements</h2>
 <p>Viewing requirements for: </p>
@@ -62,7 +67,7 @@ $game_details = $response["result"];
 <p>These users have <?php echo $game_details["title"]; ?></p>
 <table>
 <thead>
-    <tr><th>Name</th><th>Nickname</th><th>Platform</th></tr>
+    <tr><th>Name</th><th>Nickname</th><th>Platform</th><th></th></tr>
 </thead>
 <tbody>
     <?php 
@@ -92,4 +97,5 @@ $game_details = $response["result"];
     ?>
 </tbody>
 </table>
+</div>
 <script src="static/js/game_details.js"></script>

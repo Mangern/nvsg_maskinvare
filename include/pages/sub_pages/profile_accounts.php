@@ -30,7 +30,7 @@ function remove_service($id) {
 }
 ?>
 
-<table>
+<table class="no-divider">
 <thead>
     <tr><th>Service</th><th>Account Tag</th></tr>
 </thead>

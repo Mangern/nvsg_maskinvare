@@ -2,7 +2,7 @@
 
 <table>
 <thead>
-    <tr><th>Machine name</th><th>RAM</th><th>CPU</th><th>GPU</th><th>Storage space</th></tr>
+    <tr><th>Machine name</th><th>RAM</th><th>CPU</th><th>GPU</th><th>Storage space</th><th></th></tr>
 </thead>
 <tbody>
     
@@ -13,7 +13,7 @@
     function delete_machine_button($id) {
         return "<form method='POST' action='form_processors/delete_machine.php'>
                     <input type='hidden' name='id_machine' value='$id'>
-                    <input type='submit' name='delete_machine' value='Delete'>
+                    <input class='button-delete' type='submit' name='delete_machine' value='Delete'>
                 </form>";
     }
 

@@ -11,10 +11,15 @@ if($response["error"]) {
 $users = $response["result"];
 ?>
 
+<ul class="navbar-left">
+    <li class="sub-menu-item"><a class="active-left" href="">Users</a></li>
+</ul>
+
+<div class="inner-content">
 <h1>All Users</h1>
 <table>
 <thead>
-    <tr><th>Name</th><th>Nickname</th></tr>
+    <tr><th>Name</th><th>Nickname</th><th></th></tr>
 </thead>
 <tbody>
     <?php 
@@ -39,3 +44,4 @@ $users = $response["result"];
     ?>
 </tbody>
 </table>
+</div>

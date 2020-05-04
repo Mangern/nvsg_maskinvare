@@ -23,5 +23,6 @@
 
     <br>
 
-    <p>Already have an account? <a href="<?php echo BASE_URL . "?page=" . PAGE_LOGIN; ?>">Log in</a></p>
+    <p>Already have an account? <a href="<?php echo sub_url(PAGE_LOGIN, PAGE_LOGIN_LOGIN) ?>">Log in</a></p>
+
 </form>

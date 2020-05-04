@@ -1,0 +1,201 @@
+body {
+    margin:0;
+
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.navbar-main {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    z-index: 100;
+    overflow: hidden;
+    background-color: #333;
+}
+
+.main-menu-item {
+    float: left;
+}
+
+.main-menu-item .menu-link {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+#img_logo {
+    height: 42px;
+    width: auto;
+}
+
+
+/* Change the link color to #111 (black) on hover */
+.main-menu-item .menu-link:hover {
+    background-color: #111;
+}
+
+.active-main {
+    background-color: #75BFC3 !important;
+}
+
+.navbar-left {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 20%;
+    background-color: #f1f1f1;
+    height: 100%; /* Full height */
+    position: sticky; /* Make it stick, even on scroll */
+    overflow: auto; /* Enable scrolling if the sidenav has too much content */
+}
+
+.sub-menu-item a {
+    display: block;
+    color: #000;
+    padding: 8px 16px;
+    text-decoration: none;
+}
+
+/* Change the link color on hover */
+.sub-menu-item a:hover {
+    background-color: #555;
+    color: white;
+}
+
+.sub-menu-item .active-left {
+    color: white;
+    background-color: #333 !important;
+}
+
+.content {
+    margin: 0;
+    display: flex;
+    flex-direction: row;
+    height: auto;
+}
+
+.content {
+    margin: 0;
+    margin-top: 46px;
+}
+
+.inner-content {
+    width: 70%;
+    margin: 0px 20px;
+}
+
+.login-content {
+    width: 70%;
+    margin: 0px auto;
+}
+
+.fill {
+    position: fixed;
+    top: 0;
+    z-index: -1;
+    width: 100%;
+}
+
+#container_home {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.bg-image {
+    /* The image used */
+    background-image: url("http://localhost/nvsg_maskinvare/static/img/bakgrunn.png");
+
+    /* Add the blur effect */
+    filter: blur(8px);
+    -webkit-filter: blur(8px);
+
+    /* Full height */
+    width: auto;
+    height: 100%;
+
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+/* Position text in the middle of the page/image */
+.bg-text {
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0, 0.4); /* Black w/opacity/see-through */
+    color: white;
+    font-weight: bold;
+    border: 3px solid #f1f1f1;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    width: 80%;
+    padding: 20px;
+    text-align: center;
+}
+
+input[type=button], input[type=submit], input[type=reset], button {
+    background-color: #75BFC3;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.button-delete {
+    background-color: #701a1a !important;
+}
+
+input[type=text], input[type=password], input[type=number] {
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 2px solid rgb(189, 189, 189);
+    border-radius: 4px;
+}
+
+input[type=text]:focus, input[type=password]:focus {
+    border: 3px solid #555;
+}
+
+input, label {
+    display:block;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.no-divider th, .no-divider td {
+    border-bottom: none;
+}
+
+select {
+    width: 200px;
+    padding: 16px 20px;
+    border: none;
+    border-radius: 4px;
+    background-color: #f1f1f1;
+}

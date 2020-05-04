@@ -10,7 +10,6 @@ const BASE_URL = "http://localhost/nvsg_maskinvare/index.php";
 // Pages
 const PAGE_NO_SUB = "";
 const PAGE_LOGIN = "login";
-const PAGE_REGISTER = "register";
 const PAGE_HOME = "home";
 const PAGE_GAMES = "games";
 const PAGE_USERS = "users";
@@ -20,6 +19,9 @@ const PAGE_REGISTER_GAME = "register_game";
 const PAGE_USER_DETAILS = "user_details";
 
 // Sub-pages
+const PAGE_LOGIN_LOGIN = "login_login";
+const PAGE_LOGIN_REGISTER = "login_register";
+
 const PAGE_PROFILE_SETTINGS = "profile_settings";
 const PAGE_PROFILE_MACHINES = "profile_machines";
 const PAGE_PROFILE_ADD_MACHINE ="profile_add_machine";
