@@ -5,8 +5,13 @@ session_start();
 
 $page = (isset($_GET["page"]) ? $_GET["page"] : "home");
 
-if(!isset($_SESSION["user"]) && $page != PAGE_LOGIN && $page != PAGE_REGISTER) {
+
+if(!isset($_SESSION["user"]) && $page != PAGE_LOGIN) {
     redirect(PAGE_LOGIN, PAGE_LOGIN_LOGIN);
+}
+
+if($page == PAGE_ADMIN && !$_SESSION["user"]["admin"]) {
+    $page = "home";
 }
 
 if(isset($_SESSION["error"])) {
@@ -67,7 +72,8 @@ function is_profile($page) {
 
 
     <div class="content">
-    <?php 
+    <?php
+        
         include "include/pages/" . $page . ".php";
     ?>
 

@@ -17,6 +17,7 @@ const PAGE_PROFILE = "profile";
 const PAGE_GAME_DETAILS = "game_details";
 const PAGE_REGISTER_GAME = "register_game";
 const PAGE_USER_DETAILS = "user_details";
+const PAGE_ADMIN = "admin";
 
 // Sub-pages
 const PAGE_LOGIN_LOGIN = "login_login";
@@ -32,6 +33,8 @@ const PAGE_PROFILE_ACCOUNTS = "profile_accounts";
 const PAGE_USER_DETAILS_PROFILE = "user_details_profile";
 const PAGE_USER_DETAILS_MACHINES = "user_details_machines";
 const PAGE_USER_DETAILS_GAMES = "user_details_games";
+
+const PAGE_ADMIN_PLATFORMS = "admin_platforms";
 
 // Other
 const ID_PLATFORM_PC = 1;

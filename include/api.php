@@ -68,7 +68,8 @@ class API {
             "email" => $email,
             "first_name" => $first_name,
             "last_name" => $last_name,
-            "nickname" => NULL
+            "nickname" => NULL,
+            "admin" => 0
         );
         return $response;
     }
@@ -363,7 +364,8 @@ class API {
             "email" => $result["email"],
             "first_name" => $result["first_name"],
             "last_name" => $result["last_name"],
-            "nickname" => $result["nickname"]
+            "nickname" => $result["nickname"],
+            "admin" => $result["admin"]
         );
         return $response;
     }
