@@ -443,8 +443,13 @@ class API {
         $stmt->bind_param("i", $platform_id);
 
         if(!$stmt->execute())return $this->db_error_response("fetch_default_machine");
-        $result = $stmt->get_result()->fetch_assoc();
-        $response = array("error" => false, "result" => $result);
+        $result = $stmt->get_result();
+
+        if($result->num_rows == 0) {
+            return array("error" => true, "error_msg" => "Platform $platform_id has no default machine");
+        }
+
+        $response = array("error" => false, "result" => $result->fetch_assoc());
         return $response;
     }
 
