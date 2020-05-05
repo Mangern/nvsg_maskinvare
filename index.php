@@ -1,4 +1,4 @@
-<?php 
+<?php
 include 'include/meta.php';
 
 session_start();
@@ -6,26 +6,28 @@ session_start();
 $page = (isset($_GET["page"]) ? $_GET["page"] : "home");
 
 
-if(!isset($_SESSION["user"]) && $page != PAGE_LOGIN) {
+if (!isset($_SESSION["user"]) && $page != PAGE_LOGIN) {
     redirect(PAGE_LOGIN, PAGE_LOGIN_LOGIN);
 }
 
-if($page == PAGE_ADMIN && !$_SESSION["user"]["admin"]) {
+if ($page == PAGE_ADMIN && !$_SESSION["user"]["admin"]) {
     $page = "home";
 }
 
-if(isset($_SESSION["error"])) {
+if (isset($_SESSION["error"])) {
     echo $_SESSION["error"];
     unset($_SESSION["error"]);
 }
 
 
-function is_home($page){
+function is_home($page)
+{
     return $page == PAGE_HOME;
 }
 
-function is_games($page) {
-    switch($page) {
+function is_games($page)
+{
+    switch ($page) {
         case PAGE_GAMES:
         case PAGE_REGISTER_GAME:
         case PAGE_GAME_DETAILS:
@@ -34,8 +36,9 @@ function is_games($page) {
     return false;
 }
 
-function is_users($page) {
-    switch($page) {
+function is_users($page)
+{
+    switch ($page) {
         case PAGE_USERS:
         case PAGE_USER_DETAILS:
             return true;
@@ -43,22 +46,25 @@ function is_users($page) {
     return false;
 }
 
-function is_profile($page) {
+function is_profile($page)
+{
     return $page == PAGE_PROFILE;
 }
 ?>
 <html>
+
 <head>
     <title>NVSG - <?php echo $page; ?></title>
     <link rel="stylesheet" href="static/css/main_style.css" type="text/css">
 
     <?php
-        if($page == PAGE_LOGIN) {
-            echo "<link rel='stylesheet' href='static/css/login_style.css' type='text/css'>";
-        }
-    
+    if ($page == PAGE_LOGIN) {
+        echo "<link rel='stylesheet' href='static/css/login_style.css' type='text/css'>";
+    }
+
     ?>
 </head>
+
 <body>
     <div>
         <ul class="navbar-main">
@@ -72,11 +78,11 @@ function is_profile($page) {
 
 
     <div class="content">
-    <?php
-        
+        <?php
         include "include/pages/" . $page . ".php";
-    ?>
+        ?>
 
     </div>
 </body>
+
 </html>

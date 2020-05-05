@@ -35,6 +35,7 @@ const PAGE_USER_DETAILS_MACHINES = "user_details_machines";
 const PAGE_USER_DETAILS_GAMES = "user_details_games";
 
 const PAGE_ADMIN_PLATFORMS = "admin_platforms";
+const PAGE_ADMIN_REGISTER_DEFAULT_MACHINE = "admin_register_default_machine";
 
 // Other
 const ID_PLATFORM_PC = 1;

@@ -331,6 +331,23 @@ class API {
         return array("error" => false);
     }
 
+
+    function insert_platform($name) {
+        $sql = <<<SQL
+            INSERT INTO
+                platform (name)
+            VALUES
+                (?)
+        SQL;
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("s", $name);
+
+        if(!$stmt->execute())return $this->db_error_response("insert platform");
+
+        return array("error" => false);
+    }
+
     // Accessers
     
 

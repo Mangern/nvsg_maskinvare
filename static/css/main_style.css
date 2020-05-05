@@ -199,3 +199,11 @@ select {
     border-radius: 4px;
     background-color: #f1f1f1;
 }
+
+.nomargin {
+    margin: 0;
+}
+
+tr {
+    height: 76px;
+}

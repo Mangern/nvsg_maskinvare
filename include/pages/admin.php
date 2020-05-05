@@ -5,7 +5,7 @@ $page = (isset($_GET["sub_page"]) ? $_GET["sub_page"] : PAGE_ADMIN_PLATFORMS);
 
 function is_platforms() {
     global $page;
-    return $page == PAGE_ADMIN_PLATFORMS;
+    return $page == PAGE_ADMIN_PLATFORMS || $page == PAGE_ADMIN_REGISTER_DEFAULT_MACHINE;
 }
 ?>
 
