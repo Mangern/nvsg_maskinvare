@@ -4,7 +4,7 @@ class API {
 
     // Helpers
     private function db_error_response($location = "", $error_info = "") {
-        return array("error" => true, "error_msg" => "Failed to query to database on " . $location . ($error_info == "" ? "" : ": " . $error_info));
+        return array("error" => true, "error_msg" => "Unknown error occurred in " . $location . ($error_info == "" ? "" : ": " . $error_info));
     }
 
     private function fetch_all($table) {
