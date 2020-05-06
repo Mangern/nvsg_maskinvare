@@ -41,7 +41,9 @@ function make_label(text, input_name) {
 }
 
 function add_platform() {
-    var form = document.getElementById("container_dynamic_inputs");
+    var mini_form = document.createElement("div");
+    mini_form.className += "spaced";
+    
 
 
     var select_id = "select_platform_" + platform_counter;
@@ -95,21 +97,23 @@ function add_platform() {
         }
     }
 
-    form.appendChild(document.createElement("br"));   
-    form.appendChild(label);
-    form.appendChild(select);
+    mini_form.appendChild(label);
+    mini_form.appendChild(select);
 
-    form.appendChild(document.createElement("br"));
+    var req_label = document.createElement("label");
+    req_label.innerText = "Requirements";
+
+    mini_form.appendChild(req_label);
+
 
     var sspace_name = "storage_space_" + platform_counter;
     var sspace_elem = create_input_element("Storage Space", sspace_name, "number");
 
-    form.appendChild(sspace_elem);
+    mini_form.appendChild(sspace_elem);
 
 
-    form.appendChild(document.createElement("br"));
 
-    form.appendChild(create_input_element("RAM", "ram_" + platform_counter, "number"));
+    mini_form.appendChild(create_input_element("RAM", "ram_" + platform_counter, "number"));
 
     var cpu_select = document.createElement("select");
     cpu_select.id = "select_cpu_" + platform_counter;
@@ -127,9 +131,8 @@ function add_platform() {
         cpu_select.appendChild(option);
     }
 
-    form.appendChild(document.createElement("br"));
 
-    form.appendChild(cpu_select);
+    mini_form.appendChild(cpu_select);
 
     var gpu_select = document.createElement("select");
     gpu_select.id = "select_gpu_" + platform_counter;
@@ -147,11 +150,11 @@ function add_platform() {
         gpu_select.appendChild(option);
     }
 
-    form.appendChild(document.createElement("br"));
 
-    form.appendChild(gpu_select);
+    mini_form.appendChild(gpu_select);
 
 
+    document.getElementById("container_dynamic_inputs").appendChild(mini_form);
     
     platform_counter++;
 
@@ -162,4 +165,6 @@ function add_platform() {
     if(platform_counter == platforms.length) {
         document.getElementById("button_add_platform").style.display = "none";
     }
+
+
 }

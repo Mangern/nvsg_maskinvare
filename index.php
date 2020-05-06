@@ -15,8 +15,11 @@ if ($page == PAGE_ADMIN && !$_SESSION["user"]["admin"]) {
 }
 
 if (isset($_SESSION["error"])) {
+    echo "<div class='error-box'>";
     echo $_SESSION["error"];
+    echo "</div>";
     unset($_SESSION["error"]);
+
 }
 
 

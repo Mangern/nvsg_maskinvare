@@ -102,6 +102,7 @@ class API {
         );
     }
 
+    // Inserts the default machine of given platform to given user
     function insert_default_machine($user_id, $platform_id) {
         $sql = <<<SQL
             INSERT INTO user_has_machine (id_user, id_machine) VALUES (
@@ -344,6 +345,53 @@ class API {
         $stmt->bind_param("s", $name);
 
         if(!$stmt->execute())return $this->db_error_response("insert platform");
+
+        return array("error" => false);
+    }
+
+    function register_default_machine($platform_id, $platform_name, $ram, $storage_space, $cpu_name, $gpu_name) {
+        // insert gpu and cpu
+        $stmt = $this->conn->prepare("INSERT INTO cpu (name, score) VALUES (?, 0)");
+        $stmt->bind_param("s", $cpu_name);
+
+        if(!$stmt->execute())return $this->db_error_response("register default machine / insert cpu", $stmt->error);
+
+        $cpu_id = $stmt->insert_id;
+
+        $stmt = $this->conn->prepare("INSERT INTO gpu (name, score) VALUES (?, 0)");
+        $stmt->bind_param("s", $gpu_name);
+
+        if(!$stmt->execute())return $this->db_error_response("register default machine / insert gpu", $stmt->error);
+
+        $gpu_id = $stmt->insert_id;
+
+        // Insert default machine
+        $sql = <<<SQL
+            INSERT INTO machine (
+                name,
+                ram,
+                id_cpu,
+                id_gpu,
+                storage_space,
+                id_platform
+            )
+            VALUES (
+                ?,?,?,?,?,?
+            )
+        SQL;
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("siiiii", $platform_name, $ram, $cpu_id, $gpu_id, $storage_space, $platform_id);
+
+        if(!$stmt->execute())return $this->db_error_response("register default machine", $stmt->error);
+
+        // Bind to platform
+        $machine_id = $stmt->insert_id;
+
+        $stmt = $this->conn->prepare("UPDATE platform SET id_default_machine = ? WHERE id_platform = ?");
+        $stmt->bind_param("ii", $machine_id, $platform_id);
+
+        if(!$stmt->execute())return $this->db_error_response("register default machine / bind to platform", $stmt->error);
 
         return array("error" => false);
     }
