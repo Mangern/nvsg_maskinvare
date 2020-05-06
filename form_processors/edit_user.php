@@ -21,5 +21,4 @@ if(isset($_POST["edit_user"])) {
     $_SESSION["message"] = "Changes saved";
     redirect(PAGE_PROFILE);
 }
-
 ?>
