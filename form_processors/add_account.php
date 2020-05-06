@@ -14,7 +14,7 @@ if(isset($_POST["add_account"])) {
     if($response["error"]) {
         $_SESSION["error"] = $response["error_msg"];
     }
-    
+    else $_SESSION["message"] = "Account was added";
 }
 redirect(PAGE_PROFILE, PAGE_PROFILE_ACCOUNTS);
 ?>

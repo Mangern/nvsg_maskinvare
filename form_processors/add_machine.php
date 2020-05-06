@@ -29,6 +29,7 @@ if(isset($_POST["add_machine"])) {
     if($response["error"]) {
         $_SESSION["error"] = $response["error_msg"];
     }
+    else $_SESSION["message"] = "Machine was inserted";
     redirect(PAGE_PROFILE, PAGE_PROFILE_MACHINES);
 }
 ?>

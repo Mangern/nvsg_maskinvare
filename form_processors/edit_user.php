@@ -18,6 +18,7 @@ if(isset($_POST["edit_user"])) {
         redirect(PAGE_PROFILE);
     }
     $_SESSION["user"] = $response["result"];
+    $_SESSION["message"] = "Changes saved";
     redirect(PAGE_PROFILE);
 }
 

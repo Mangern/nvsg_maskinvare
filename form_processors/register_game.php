@@ -42,6 +42,8 @@ if(isset($_POST["register_game"])) {
         $response = $api_handle->register_platform_to_game($game_id, $title, $platform_id, $requirements, $i);
         if($response["error"])$_SESSION["error"] .= $response["error_msg"] . json_encode($requirements);
     }
+
+    if(!isset($_SESSION["error"]))$_SESSION["message"] = "Successfully registered $title";
     redirect(PAGE_GAMES);
 }
 else {

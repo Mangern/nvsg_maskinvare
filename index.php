@@ -14,12 +14,20 @@ if ($page == PAGE_ADMIN && !$_SESSION["user"]["admin"]) {
     $page = "home";
 }
 
+
 if (isset($_SESSION["error"])) {
-    echo "<div class='error-box'>";
+    echo "<div id='error-box'>";
     echo $_SESSION["error"];
     echo "</div>";
     unset($_SESSION["error"]);
 
+}
+
+if(isset($_SESSION["message"])) {
+    echo "<div id='message-box'>";
+    echo $_SESSION["message"];
+    echo "</div>";
+    unset($_SESSION["message"]);
 }
 
 

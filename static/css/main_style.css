@@ -147,11 +147,56 @@ body {
     text-align: center;
 }
 
-.error-box {
-    position: fixed;
-    right: 100px;
-    bottom: 20px;
+#error-box, #message-box {
+    position: absolute;
+    right: 16px;
+    bottom: 16px;
+    padding: 8px;
+    z-index: 50;
+    color:white;
+}
+
+#error-box {
     border: 3px solid red;
+    background-color: #701a1a;
+}
+
+#message-box {
+    border: 3px solid green;
+    background-color: darkgreen;
+
+    -moz-animation: hideAnimation 0s ease-in 5s forwards;
+    /* Firefox */
+    -webkit-animation: hideAnimation 0s ease-in 5s forwards;
+    /* Safari and Chrome */
+    -o-animation: hideAnimation 0s ease-in 5s forwards;
+    /* Opera */
+    animation: hideAnimation 0s ease-in 5s forwards;
+    -webkit-animation-fill-mode: forwards;
+    animation-fill-mode: forwards;
+}
+
+@keyframes hideAnimation {
+    to {
+        position: relative;
+        width:0;
+        height:0;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        visibility:hidden;
+    }
+}
+@-webkit-keyframes hideAnimation {
+    to {
+        position: relative;
+        width:0;
+        height:0;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        visibility:hidden;
+    }
 }
 
 input[type=button], input[type=submit], input[type=reset], button {

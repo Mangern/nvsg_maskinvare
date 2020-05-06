@@ -22,6 +22,8 @@ if(isset($_POST["edit_accounts"])) {
 
         $api_handle->update_account($uid, $id_service, $new_name);
     }
+
+    $_SESSION["message"] = "Accounts updated";
 }
 redirect(PAGE_PROFILE, PAGE_PROFILE_ACCOUNTS);
 ?>

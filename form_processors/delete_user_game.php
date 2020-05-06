@@ -13,6 +13,7 @@ if(isset($_POST["delete_user_game"])) {
     if($response["error"]) {
         $_SESSION["error"] = $response["error_msg"];
     }
+    else $_SESSION["message"] = "Game successfully removed";
     redirect(PAGE_PROFILE, PAGE_PROFILE_GAMES);
 }
 ?>

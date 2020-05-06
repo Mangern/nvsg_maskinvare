@@ -12,14 +12,14 @@ if(isset($_POST["register"])) {
 
     if($password != $password_confirm) {
         $_SESSION["error"] = "Password did not equal Confirm password";
-        redirect(PAGE_REGISTER);
+        redirect(PAGE_LOGIN, PAGE_LOGIN_REGISTER);
     }
     $response = $api_handle->register($email, $password, $first_name, $last_name);
     session_start();
 
     if($response["error"]) {
         $_SESSION["error"] = $response["error_msg"];
-        redirect(PAGE_REGISTER);
+        redirect(PAGE_LOGIN, PAGE_LOGIN_REGISTER);
     }
     else {
         $_SESSION["user"] = $response["result"];

@@ -12,8 +12,9 @@ if(isset($_POST["add_user_game"])) {
     $response = $api_handle->insert_user_game($uid, $game_id, $platform_id);
 
     if($response["error"]) {
-        $_SESSION["error"] = $response["error_msg"];
+        $_SESSION["error"] = "Failed to add game: user already has it.";
     }
+    else $_SESSION["message"] = "Game was added";
     redirect(PAGE_PROFILE, PAGE_PROFILE_GAMES);
 }
 ?>

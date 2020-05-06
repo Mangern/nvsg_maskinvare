@@ -11,6 +11,7 @@ if(isset($_POST["add_platform"])) {
     if($response["error"]) {
         $_SESSION["error"] = $response["error_msg"];
     }
+    else $_SESSION["message"] = "Platform was inserted";
 }
 
 redirect(PAGE_ADMIN, PAGE_ADMIN_PLATFORMS);
